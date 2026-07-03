@@ -2,46 +2,43 @@
 
 ## Project Overview
 
-This project implements a Smart Logistics and Supply Chain Analytics System using Apache Spark and PySpark.
+This project implements a Smart Logistics and Supply Chain Analytics System using Apache Spark and PySpark. It analyzes shipment records, delivery performance, delayed shipments, department-level warehouse utilization, fuel consumption trends, regional logistics performance, and late-delivery risk.
 
-The system analyzes shipment records, delivery performance, department-level warehouse utilization, delayed shipments, fuel consumption trends, and regional logistics performance. It also builds a machine learning model to predict delivery delay risk.
-
-This work is based on the case study requirement to design, implement, and deploy a logistics analytics platform using Apache Spark and PySpark.
+The notebook work from Q1 to Q7 is completed in `AI_Compute_CaseStudy1.ipynb`. The post-notebook deployment stage adds a Dockerized Spark application, Kubernetes manifests, a GitHub Actions CI/CD workflow, evidence logs, and verification documentation.
 
 ## Case Study Requirements Covered
 
-| Question | Requirement                                                   | Status    |
-| -------- | ------------------------------------------------------------- | --------- |
-| Q1       | Spark initialization and logistics dataset loading            | Completed |
-| Q2       | RDD transformations and actions                               | Completed |
-| Q3       | Key-value RDD operations, shuffle operations, and persistence | Completed |
-| Q4       | Spark DataFrame filtering, grouping, joins, and aggregations  | Completed |
-| Q5       | EDA and Spark SQL analysis                                    | Completed |
-| Q6       | ETL pipeline for shipment, warehouse, and tracking-style data | Completed |
-| Q7       | ML model for delivery delay prediction                        | Completed |
+| Question | Requirement | Status |
+| --- | --- | --- |
+| Q1 | Spark initialization and logistics dataset loading | Completed |
+| Q2 | RDD transformations and actions | Completed |
+| Q3 | Key-value RDD operations, shuffle operations, and persistence | Completed |
+| Q4 | Spark DataFrame filtering, grouping, joins, and aggregations | Completed |
+| Q5 | Exploratory Data Analysis and Spark SQL analytics | Completed |
+| Q6 | ETL pipeline for shipment, warehouse, and tracking-style data | Completed |
+| Q7 | Machine learning model for delivery delay prediction | Completed |
+| Post-Q7 | Docker, Kubernetes, CI/CD, evidence logs, and documentation | Completed, with Kubernetes deployment pending local cluster setup |
 
-## Dataset Used
+## Datasets Used
 
-### 1. DataCo Supply Chain Dataset
+### DataCo Supply Chain Dataset
 
-File used:
+File:
 
 ```text
 DataCoSupplyChainDataset.csv
 ```
 
-[Kaggle](https://www.kaggle.com/datasets/evilspirit05/datasupplychain)
-
 Purpose:
 
 - Shipment analysis
-- Delivery performance analysis
-- Delayed shipment identification
-- Department-level warehouse utilization
-- Regional logistics reporting
-- Delay prediction model
+- Delivery status analysis
+- Late delivery risk analysis
+- Department or warehouse utilization proxy
+- Sales and regional logistics reporting
+- Machine learning model for late delivery risk
 
-Important columns used:
+Important columns used include:
 
 ```text
 Order Id
@@ -64,23 +61,21 @@ Type
 Customer Segment
 ```
 
-### 2. Fuel Consumption Dataset
+### Fuel Consumption Dataset
 
-File used:
+File:
 
 ```text
 fuel.csv
 ```
 
-[IBM Developer Skills Network](https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-ML0101EN-SkillsNetwork/labs/Module%202/data/FuelConsumptionCo2.csv)
-
 Purpose:
 
 - Fuel consumption trend analysis
-- Vehicle class fuel comparison
-- CO2 emission trend analysis
+- Vehicle class comparison
+- CO2 emissions analysis
 
-Important columns used:
+Important columns used include:
 
 ```text
 MAKE
@@ -97,213 +92,149 @@ CO2EMISSIONS
 
 ## Important Assumptions
 
-The case study mentions warehouse and GPS tracking data, but the available dataset does not contain a separate warehouse table or a separate GPS tracking table.
+The case study mentions warehouse and GPS tracking data, but the provided files do not include a separate warehouse master table or a GPS tracking table.
 
 Because of that:
 
 - `Department Name` is used as a warehouse or department utilization proxy.
 - Tracking-style ETL is created from shipment movement fields such as order region, country, city, shipping mode, delivery status, and delivery days.
-- Fuel data is analyzed separately. It is not joined with shipment-level records because there is no common vehicle or fleet identifier between both datasets.
+- Fuel data is analyzed separately because there is no common vehicle or fleet identifier between the shipment dataset and the fuel dataset.
 
-No fake GPS coordinates, warehouse IDs, or shipment-fuel joins were created.
+No fake warehouse IDs, GPS coordinates, shipment-fuel joins, screenshots, logs, or metrics were created.
 
 ## Project Structure
 
 ```text
 CDAC_aicompute_casestudy/
-â”œâ”€â”€ AI_Compute_CaseStudy1.ipynb
-â”œâ”€â”€ DataCoSupplyChainDataset.csv
-â”œâ”€â”€ fuel.csv
-â”œâ”€â”€ screenshots/
-â”œâ”€â”€ requirements.txt
+|-- AI_Compute_CaseStudy1.ipynb
+|-- DataCoSupplyChainDataset.csv
+|-- fuel.csv
+|-- app/
+|   |-- spark_app.py
+|-- k8s/
+|   |-- deployment.yaml
+|   |-- service.yaml
+|-- .github/
+|   |-- workflows/
+|       |-- ci-cd.yml
+|-- screenshots_outputs/
+|   |-- evidence logs and rendered case study screenshots
+|-- Dockerfile
+|-- .dockerignore
+|-- README.md
+|-- FINAL_VERIFICATION_REPORT.md
+|-- PERSONAL_VIVA_DOCUMENTATION.md
 ```
 
 ## How to Run the Notebook
 
-### Step 1: Clone the Repository
+1. Clone the repository.
 
 ```bash
 git clone https://github.com/priyansupattanaik/CDAC_aicompute_casestudy
 cd CDAC_aicompute_casestudy
 ```
 
-### Step 2: Open Notebook in Google Colab
-
-Open:
+2. Open the notebook.
 
 ```text
 AI_Compute_CaseStudy1.ipynb
 ```
 
-### Step 3: Upload or Verify Dataset Files
-
-Make sure these files are available in the expected path used inside the notebook:
+3. Verify that the dataset files are available.
 
 ```text
 DataCoSupplyChainDataset.csv
 fuel.csv
 ```
 
-For Google Colab, the notebook uses Google Drive paths. Update the base path if your folder location is different.
-
-Example:
-
-```python
-base_path = "/content/drive/MyDrive/Colab Notebooks/AI Comupte CaseStudy"
-```
-
-### Step 4: Run All Cells in Order
-
-Run the notebook from top to bottom.
+4. Run all notebook cells in order.
 
 The notebook flow is:
 
-1. Mount Google Drive
-2. Set dataset paths
-3. Install and initialize PySpark
-4. Load datasets
-5. Inspect schema and records
-6. Solve Q1 to Q7 step by step
-7. Generate EDA outputs and plots
-8. Build ETL outputs
-9. Train and evaluate ML model
-10. Print final checklist and conclusions
+1. Mount or configure the dataset path.
+2. Install and initialize PySpark.
+3. Load shipment and fuel datasets.
+4. Complete RDD operations.
+5. Complete key-value RDD operations.
+6. Complete Spark DataFrame operations.
+7. Run Spark SQL and EDA analysis.
+8. Generate ETL outputs.
+9. Train and evaluate the machine learning model.
+10. Print final outputs and conclusions.
 
-## Analysis Performed
+## Notebook Work Summary
 
 ### Q1: Spark Initialization and Data Loading
 
-- Spark session initialized
-- Shipment dataset loaded
-- Fuel dataset loaded
-- Rows and columns verified
+- SparkSession initialized.
+- Shipment dataset loaded.
+- Fuel dataset loaded.
+- Dataset row and column counts verified.
 
 ### Q2: RDD Implementation
 
-RDD operations used:
-
-- `map`
-- `filter`
-- `flatMap`
-- `reduceByKey`
-
-Actions used:
-
-- `count`
-- `take`
-- `collect`
+RDD operations include `map`, `filter`, `flatMap`, `reduceByKey`, `count`, `take`, and `collect`.
 
 ### Q3: Key-Value Operations and Persistence
 
-Implemented:
-
-- Key-value RDDs
-- `groupByKey`
-- `reduceByKey`
-- `sortByKey`
-- `persist`
+Implemented key-value RDDs, `groupByKey`, `reduceByKey`, sorting, shuffle-related operations, and persistence.
 
 ### Q4: Spark DataFrame Operations
 
-Implemented:
-
-- Filtering late deliveries
-- Grouping by shipping mode
-- Aggregations on sales and delivery days
-- Join with department-level average sales
+Implemented filtering, grouping, aggregations, and joins on structured shipment data.
 
 ### Q5: EDA and Spark SQL
 
-Spark SQL queries were used to analyze:
+Spark SQL queries analyze:
 
 - Delivery performance
-- Warehouse utilization
+- Warehouse or department utilization
 - Delayed shipments
 - Fuel consumption trends
-- Regional logistics reports
-
-Plots were added for better interpretation of:
-
-- Delivery status distribution
-- Warehouse or department utilization
-- Delayed shipments by shipping mode
-- Fuel consumption by vehicle class
 - Regional logistics performance
-- Model feature coefficients
 
 ### Q6: ETL Pipeline Development
 
-ETL outputs were created for:
+ETL outputs are generated for:
 
 - Shipment data
 - Warehouse or department utilization data
 - Tracking-style shipment movement data
 
-The ETL output is written in Parquet format.
-
-Generated output folder:
-
-```text
-etl_output/
-```
-
-This folder is generated by running the notebook and does not need to be manually edited.
+The notebook writes local ETL outputs to `etl_output/`.
 
 ### Q7: Machine Learning Implementation
 
-A Logistic Regression model was implemented to predict delivery delay risk.
+A Logistic Regression model predicts delivery delay risk using `Late_delivery_risk` as the target column.
 
-Target column:
+Features include scheduled shipping days, sales, item quantity, benefit per order, profit ratio, shipping mode, department, market, order type, order region, and customer segment.
 
-```text
-Late_delivery_risk
-```
+## Dockerized Spark Application
 
-Features used include:
+The post-Q7 Docker application is implemented in:
 
 ```text
-Days for shipment (scheduled)
-Sales
-Order Item Quantity
-Benefit per order
-Order Item Profit Ratio
-Shipping Mode
-Department Name
-Market
-Type
-Order Region
-Customer Segment
+app/spark_app.py
 ```
 
-Model evaluation includes:
+The application:
 
-- Accuracy
-- AUC
-- Prediction sample
-- Feature coefficient analysis
+- Starts a SparkSession named `smart-logistics-spark`.
+- Reads `/app/data/DataCoSupplyChainDataset.csv`.
+- Reads `/app/data/fuel.csv`.
+- Prints shipment and fuel row/column counts.
+- Creates Spark SQL temp views named `shipments` and `fuel`.
+- Runs delivery performance analysis.
+- Runs warehouse utilization analysis.
+- Runs delayed shipment analysis.
+- Runs fuel trend analysis.
+- Runs regional logistics analysis.
+- Writes Parquet ETL outputs inside the container at `/app/output/shipments`, `/app/output/warehouse`, and `/app/output/tracking`.
+- Prints `etl completed` and `application completed`.
+- Stops Spark cleanly.
 
-## Key Findings
-
-Based on the notebook outputs:
-
-- Late delivery is the largest delivery status category.
-- Standard Class has the highest number of delayed shipments.
-- Fan Shop, Golf, and Apparel show the highest department-level utilization by quantity.
-- Western Europe and Central America are among the strongest regions by shipment count and sales.
-- Van and large vehicle classes show higher average fuel consumption and CO2 emissions.
-- Shipping mode and scheduled shipment days are important signals in the delay prediction model.
-
-## Limitations
-
-- No separate warehouse master table is available.
-- No separate GPS tracking dataset is available.
-- No direct vehicle or fleet ID is available to connect shipment records with fuel consumption records.
-- The ML model uses `StringIndexer` for categorical variables. This is acceptable for the case study, but OneHotEncoder would be better for stronger categorical interpretation.
-- The completed Q1-Q7 notebook is preserved, and Docker, Kubernetes, and CI/CD deliverables have been added for the deployment stage.
-
-## Docker, Kubernetes, and CI/CD Execution
-
-This deployment stage starts from the completed Q1-Q7 notebook: `AI_Compute_CaseStudy1.ipynb`.
+## Docker Execution
 
 Docker image name:
 
@@ -311,19 +242,19 @@ Docker image name:
 smart-logistics-spark:latest
 ```
 
-Docker build command:
+Build command:
 
 ```bash
 docker build -t smart-logistics-spark:latest .
 ```
 
-Docker run command:
+Run command:
 
 ```bash
 docker run --rm smart-logistics-spark:latest
 ```
 
-Verified Docker run output values from `screenshots_outputs/docker_run.log`:
+Verified Docker output values from evidence logs:
 
 ```text
 shipment rows: 180519
@@ -336,34 +267,130 @@ SparkContext stopped with exitCode 0
 Successfully stopped SparkContext
 ```
 
-Kubernetes manifest files:
+Evidence files include:
+
+```text
+screenshots_outputs/18_docker_build.log
+screenshots_outputs/19_docker_images.log
+screenshots_outputs/21_docker_run.log
+screenshots_outputs/22_docker_run_key_lines.log
+```
+
+## Kubernetes Files
+
+Kubernetes manifests are stored in:
 
 ```text
 k8s/deployment.yaml
 k8s/service.yaml
 ```
 
-Kubernetes status:
+The Deployment uses:
 
 ```text
-Kubernetes manifests are prepared. Local deployment is blocked because kubectl is installed but no Kubernetes context exists on this machine. Enable Docker Desktop Kubernetes or start a local cluster such as Minikube, then apply the manifests.
+image: smart-logistics-spark:latest
+imagePullPolicy: Never
 ```
 
-CI/CD workflow file:
+`imagePullPolicy: Never` is used because this project is designed for a local Docker Desktop or Minikube workflow where the image is already built locally.
+
+The Service is a `NodePort` service exposing port `8080`.
+
+Current Kubernetes status:
+
+```text
+Kubernetes YAML files are prepared. Local deployment is blocked on this machine because kubectl is installed but no Kubernetes context exists. Enable Docker Desktop Kubernetes or start Minikube before applying the manifests.
+```
+
+This is an honest environment blocker. The project does not claim that Kubernetes deployment passed without a running local cluster.
+
+## CI/CD Workflow
+
+The GitHub Actions workflow is stored in:
 
 ```text
 .github/workflows/ci-cd.yml
 ```
 
-Evidence logs are stored in:
+The workflow runs on:
+
+- Push to `main`
+- Pull request to `main`
+- Manual trigger using `workflow_dispatch`
+
+The workflow steps are:
+
+1. Checkout repository.
+2. Validate required files.
+3. Build the Docker image.
+4. Run the Docker image.
+5. Validate Kubernetes manifest content offline without requiring a live Kubernetes cluster.
+
+The Kubernetes validation step is offline because GitHub-hosted runners do not have this project local Kubernetes cluster configured. Actual Kubernetes deployment still requires Docker Desktop Kubernetes or Minikube locally.
+
+Latest verified CI/CD run:
+
+```text
+Status: Passed
+Run URL: https://github.com/priyansupattanaik/CDAC_aicompute_casestudy/actions/runs/28652457208
+Commit: d9a1370bc18f03373f8d8a019d79988d66a35f72
+```
+
+## Evidence and Screenshots
+
+Evidence is stored in:
 
 ```text
 screenshots_outputs/
 ```
 
-The evidence files are terminal logs, not screenshots. No fake screenshots were created.
+This folder contains terminal logs and real rendered case study screenshots.
+
+Important evidence files include:
+
+```text
+screenshots_outputs/21_docker_run.log
+screenshots_outputs/22_docker_run_key_lines.log
+screenshots_outputs/23_kubectl_client.log
+screenshots_outputs/24_kubernetes_contexts.log
+screenshots_outputs/27_kubernetes_status.log
+screenshots_outputs/case_study_page-1.png
+screenshots_outputs/case_study_page-2.png
+```
+
+The case study PDF screenshots were rendered using Poppler from the real `Case Study11.pdf` file. No fake screenshots were created.
+
+## Final Verification Documents
+
+Additional verification and explanation files:
+
+```text
+FINAL_VERIFICATION_REPORT.md
+PERSONAL_VIVA_DOCUMENTATION.md
+```
+
+These files document what was verified, what passed, what is blocked, and how to explain the implementation.
+
+## Key Findings
+
+- Late delivery is the largest delivery status category in the analyzed shipment data.
+- Standard Class has the highest number of delayed shipments.
+- Fan Shop, Golf, and Apparel show high department-level utilization by quantity.
+- Western Europe and Central America are among the stronger regions by shipment count and sales.
+- Van and large vehicle classes show higher average fuel consumption and CO2 emissions.
+- Shipping mode and scheduled shipment days are useful signals for delivery delay prediction.
+
+## Limitations
+
+- No separate warehouse master table is available.
+- No separate GPS tracking dataset is available.
+- No direct vehicle or fleet ID is available to join shipment records with fuel consumption records.
+- Kubernetes deployment requires a local Kubernetes context such as Docker Desktop Kubernetes or Minikube.
+- CI validates Kubernetes manifest content offline, but actual Kubernetes deployment must be tested on a real cluster.
+- The ML model uses `StringIndexer` for categorical variables; OneHotEncoder could improve categorical feature handling.
+
 ## Author
 
 ```text
-Priyansu Pattanaik.
+Priyansu Pattanaik
 ```
