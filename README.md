@@ -8,16 +8,16 @@ The notebook work from Q1 to Q7 is completed in `AI_Compute_CaseStudy1.ipynb`. T
 
 ## Case Study Requirements Covered
 
-| Question | Requirement | Status |
-| --- | --- | --- |
-| Q1 | Spark initialization and logistics dataset loading | Completed |
-| Q2 | RDD transformations and actions | Completed |
-| Q3 | Key-value RDD operations, shuffle operations, and persistence | Completed |
-| Q4 | Spark DataFrame filtering, grouping, joins, and aggregations | Completed |
-| Q5 | Exploratory Data Analysis and Spark SQL analytics | Completed |
-| Q6 | ETL pipeline for shipment, warehouse, and tracking-style data | Completed |
-| Q7 | Machine learning model for delivery delay prediction | Completed |
-| Post-Q7 | Docker, Kubernetes, CI/CD, evidence logs, and documentation | Completed, with Kubernetes deployment pending local cluster setup |
+| Question | Requirement                                                   | Status                                                            |
+| -------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Q1       | Spark initialization and logistics dataset loading            | Completed                                                         |
+| Q2       | RDD transformations and actions                               | Completed                                                         |
+| Q3       | Key-value RDD operations, shuffle operations, and persistence | Completed                                                         |
+| Q4       | Spark DataFrame filtering, grouping, joins, and aggregations  | Completed                                                         |
+| Q5       | Exploratory Data Analysis and Spark SQL analytics             | Completed                                                         |
+| Q6       | ETL pipeline for shipment, warehouse, and tracking-style data | Completed                                                         |
+| Q7       | Machine learning model for delivery delay prediction          | Completed                                                         |
+| Post-Q7  | Docker, Kubernetes, CI/CD, evidence logs, and documentation   | Completed, with Kubernetes deployment pending local cluster setup |
 
 ## Datasets Used
 
@@ -118,12 +118,10 @@ CDAC_aicompute_casestudy/
 |   |-- workflows/
 |       |-- ci-cd.yml
 |-- screenshots_outputs/
-|   |-- evidence logs and rendered case study screenshots
+|   |-- case study screenshots
 |-- Dockerfile
 |-- .dockerignore
 |-- README.md
-|-- FINAL_VERIFICATION_REPORT.md
-|-- PERSONAL_VIVA_DOCUMENTATION.md
 ```
 
 ## How to Run the Notebook
@@ -267,15 +265,6 @@ SparkContext stopped with exitCode 0
 Successfully stopped SparkContext
 ```
 
-Evidence files include:
-
-```text
-screenshots_outputs/18_docker_build.log
-screenshots_outputs/19_docker_images.log
-screenshots_outputs/21_docker_run.log
-screenshots_outputs/22_docker_run_key_lines.log
-```
-
 ## Kubernetes Files
 
 Kubernetes manifests are stored in:
@@ -328,49 +317,6 @@ The workflow steps are:
 
 The Kubernetes validation step is offline because GitHub-hosted runners do not have this project local Kubernetes cluster configured. Actual Kubernetes deployment still requires Docker Desktop Kubernetes or Minikube locally.
 
-Latest verified CI/CD run:
-
-```text
-Status: Passed
-Run URL: https://github.com/priyansupattanaik/CDAC_aicompute_casestudy/actions/runs/28652457208
-Commit: d9a1370bc18f03373f8d8a019d79988d66a35f72
-```
-
-## Evidence and Screenshots
-
-Evidence is stored in:
-
-```text
-screenshots_outputs/
-```
-
-This folder contains terminal logs and real rendered case study screenshots.
-
-Important evidence files include:
-
-```text
-screenshots_outputs/21_docker_run.log
-screenshots_outputs/22_docker_run_key_lines.log
-screenshots_outputs/23_kubectl_client.log
-screenshots_outputs/24_kubernetes_contexts.log
-screenshots_outputs/27_kubernetes_status.log
-screenshots_outputs/case_study_page-1.png
-screenshots_outputs/case_study_page-2.png
-```
-
-The case study PDF screenshots were rendered using Poppler from the real `Case Study11.pdf` file. No fake screenshots were created.
-
-## Final Verification Documents
-
-Additional verification and explanation files:
-
-```text
-FINAL_VERIFICATION_REPORT.md
-PERSONAL_VIVA_DOCUMENTATION.md
-```
-
-These files document what was verified, what passed, what is blocked, and how to explain the implementation.
-
 ## Key Findings
 
 - Late delivery is the largest delivery status category in the analyzed shipment data.
@@ -379,15 +325,6 @@ These files document what was verified, what passed, what is blocked, and how to
 - Western Europe and Central America are among the stronger regions by shipment count and sales.
 - Van and large vehicle classes show higher average fuel consumption and CO2 emissions.
 - Shipping mode and scheduled shipment days are useful signals for delivery delay prediction.
-
-## Limitations
-
-- No separate warehouse master table is available.
-- No separate GPS tracking dataset is available.
-- No direct vehicle or fleet ID is available to join shipment records with fuel consumption records.
-- Kubernetes deployment requires a local Kubernetes context such as Docker Desktop Kubernetes or Minikube.
-- CI validates Kubernetes manifest content offline, but actual Kubernetes deployment must be tested on a real cluster.
-- The ML model uses `StringIndexer` for categorical variables; OneHotEncoder could improve categorical feature handling.
 
 ## Author
 
