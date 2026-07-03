@@ -1,0 +1,1 @@
+kubectl is installed, but no Kubernetes context exists. Docker Desktop Kubernetes must be enabled or a local Kubernetes cluster such as Minikube must be started before applying manifests.

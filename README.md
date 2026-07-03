@@ -1,4 +1,4 @@
-# Smart Logistics and Supply Chain Analytics System using Apache Spark
+﻿# Smart Logistics and Supply Chain Analytics System using Apache Spark
 
 ## Project Overview
 
@@ -111,11 +111,11 @@ No fake GPS coordinates, warehouse IDs, or shipment-fuel joins were created.
 
 ```text
 CDAC_aicompute_casestudy/
-├── AI_Compute_CaseStudy1.ipynb
-├── DataCoSupplyChainDataset.csv
-├── fuel.csv
-├── screenshots/
-├── requirements.txt
+â”œâ”€â”€ AI_Compute_CaseStudy1.ipynb
+â”œâ”€â”€ DataCoSupplyChainDataset.csv
+â”œâ”€â”€ fuel.csv
+â”œâ”€â”€ screenshots/
+â”œâ”€â”€ requirements.txt
 ```
 
 ## How to Run the Notebook
@@ -299,10 +299,72 @@ Based on the notebook outputs:
 - No separate GPS tracking dataset is available.
 - No direct vehicle or fleet ID is available to connect shipment records with fuel consumption records.
 - The ML model uses `StringIndexer` for categorical variables. This is acceptable for the case study, but OneHotEncoder would be better for stronger categorical interpretation.
-- The project is currently notebook-based. Docker, Kubernetes, and CI/CD files can be added in the next stage.
+- The completed Q1-Q7 notebook is preserved, and Docker, Kubernetes, and CI/CD deliverables have been added for the deployment stage.
 
+## Docker, Kubernetes, and CI/CD Execution
+
+This deployment stage starts from the completed Q1-Q7 notebook: `AI_Compute_CaseStudy1.ipynb`.
+
+Docker image name:
+
+```text
+smart-logistics-spark:latest
+```
+
+Docker build command:
+
+```bash
+docker build -t smart-logistics-spark:latest .
+```
+
+Docker run command:
+
+```bash
+docker run --rm smart-logistics-spark:latest
+```
+
+Verified Docker run output values from `screenshots_outputs/docker_run.log`:
+
+```text
+shipment rows: 180519
+shipment cols: 53
+fuel rows: 1067
+fuel cols: 13
+etl completed
+application completed
+SparkContext stopped with exitCode 0
+Successfully stopped SparkContext
+```
+
+Kubernetes manifest files:
+
+```text
+k8s/deployment.yaml
+k8s/service.yaml
+```
+
+Kubernetes status:
+
+```text
+Kubernetes manifests are prepared. Local deployment is blocked because kubectl is installed but no Kubernetes context exists on this machine. Enable Docker Desktop Kubernetes or start a local cluster such as Minikube, then apply the manifests.
+```
+
+CI/CD workflow file:
+
+```text
+.github/workflows/ci-cd.yml
+```
+
+Evidence logs are stored in:
+
+```text
+screenshots_outputs/
+```
+
+The evidence files are terminal logs, not screenshots. No fake screenshots were created.
 ## Author
 
 ```text
 Priyansu Pattanaik.
 ```
+

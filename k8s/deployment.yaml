@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logistics-spark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logistics-spark
+  template:
+    metadata:
+      labels:
+        app: logistics-spark
+    spec:
+      containers:
+        - name: logistics-spark
+          image: smart-logistics-spark:latest
+          imagePullPolicy: Never
+          command: ["/bin/sh", "-c"]
+          args:
+            - /opt/spark/bin/spark-submit /app/app/spark_app.py && python3 -m http.server 8080 --directory /app/output
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "3Gi"
+              cpu: "2"

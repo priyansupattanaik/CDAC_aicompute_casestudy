@@ -1,0 +1,37 @@
+name: Spark Docker Kubernetes CI CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate source files
+        run: |
+          test -f AI_Compute_CaseStudy1.ipynb
+          test -f DataCoSupplyChainDataset.csv
+          test -f fuel.csv
+          test -f Dockerfile
+          test -f app/spark_app.py
+          test -f k8s/deployment.yaml
+          test -f k8s/service.yaml
+
+      - name: Build Docker image
+        run: docker build -t smart-logistics-spark:latest .
+
+      - name: Test Docker image
+        run: docker run --rm smart-logistics-spark:latest
+
+      - name: Validate Kubernetes manifests
+        run: |
+          kubectl version --client=true
+          kubectl apply --dry-run=client -f k8s/deployment.yaml
+          kubectl apply --dry-run=client -f k8s/service.yaml
