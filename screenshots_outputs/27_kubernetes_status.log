@@ -1,0 +1,1 @@
+kubectl is installed, but no Kubernetes context exists. Docker Desktop Kubernetes or another local Kubernetes cluster must be enabled before applying manifests. Kubernetes YAML files were created and client-side validation was attempted, but cluster deployment is pending environment setup.
