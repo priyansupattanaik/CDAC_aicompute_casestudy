@@ -367,4 +367,3 @@ The evidence files are terminal logs, not screenshots. No fake screenshots were 
 ```text
 Priyansu Pattanaik.
 ```
-

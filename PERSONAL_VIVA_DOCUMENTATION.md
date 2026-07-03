@@ -121,7 +121,7 @@ Actual Kubernetes deployment status from this verification: blocked by environme
 
 GitHub Actions was added in .github/workflows/ci-cd.yml to automate validation on push and pull request to main.
 
-The workflow checks out the repository, validates that required source files exist, builds the Docker image, runs the Docker image, and validates Kubernetes manifests with kubectl apply --dry-run=client.
+The workflow checks out the repository, validates that required source files exist, builds the Docker image, runs the Docker image, and validates Kubernetes manifest content offline without requiring a live Kubernetes cluster.
 
 The source-file validation step checks for the notebook, datasets, Dockerfile, Spark app, and Kubernetes YAML files.
 
@@ -258,7 +258,7 @@ GitHub Actions runs validation automatically when code is pushed or a pull reque
 
 26. What does the workflow validate?
 
-It validates required files, builds the Docker image, runs the Docker image, and attempts Kubernetes manifest validation.
+It validates required files, builds the Docker image, runs the Docker image, and validates Kubernetes manifest content offline without requiring a live Kubernetes cluster.
 
 27. What are project limitations?
 

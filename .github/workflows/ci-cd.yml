@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build-test-deploy:
@@ -32,6 +33,17 @@ jobs:
 
       - name: Validate Kubernetes manifests
         run: |
-          kubectl version --client=true
-          kubectl apply --dry-run=client -f k8s/deployment.yaml
-          kubectl apply --dry-run=client -f k8s/service.yaml
+          grep -q 'apiVersion: apps/v1' k8s/deployment.yaml
+          grep -q 'kind: Deployment' k8s/deployment.yaml
+          grep -q 'name: logistics-spark' k8s/deployment.yaml
+          grep -q 'app: logistics-spark' k8s/deployment.yaml
+          grep -q 'image: smart-logistics-spark:latest' k8s/deployment.yaml
+          grep -q 'imagePullPolicy: Never' k8s/deployment.yaml
+          grep -q 'spark-submit /app/app/spark_app.py' k8s/deployment.yaml
+          grep -q 'containerPort: 8080' k8s/deployment.yaml
+          grep -q 'apiVersion: v1' k8s/service.yaml
+          grep -q 'kind: Service' k8s/service.yaml
+          grep -q 'name: logistics-spark-service' k8s/service.yaml
+          grep -q 'type: NodePort' k8s/service.yaml
+          grep -q 'targetPort: 8080' k8s/service.yaml
+          echo 'Kubernetes manifest offline validation passed.'

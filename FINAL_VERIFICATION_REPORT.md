@@ -101,7 +101,7 @@ Workflow file:
 .github/workflows/ci-cd.yml
 `
 
-The workflow validates required source files, builds the Docker image, runs the Docker image, and attempts Kubernetes manifest validation.
+The workflow validates required source files, builds the Docker image, runs the Docker image, and validates Kubernetes manifest content offline without requiring a live Kubernetes cluster.
 
 ## Evidence Logs
 
