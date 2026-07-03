@@ -31,19 +31,27 @@ jobs:
       - name: Test Docker image
         run: docker run --rm smart-logistics-spark:latest
 
-      - name: Validate Kubernetes manifests
+      - name: Create Kubernetes cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: logistics-ci
+
+      - name: Load Docker image into Kubernetes cluster
+        run: kind load docker-image smart-logistics-spark:latest --name logistics-ci
+
+      - name: Validate Kubernetes cluster
         run: |
-          grep -q 'apiVersion: apps/v1' k8s/deployment.yaml
-          grep -q 'kind: Deployment' k8s/deployment.yaml
-          grep -q 'name: logistics-spark' k8s/deployment.yaml
-          grep -q 'app: logistics-spark' k8s/deployment.yaml
-          grep -q 'image: smart-logistics-spark:latest' k8s/deployment.yaml
-          grep -q 'imagePullPolicy: Never' k8s/deployment.yaml
-          grep -q 'spark-submit /app/app/spark_app.py' k8s/deployment.yaml
-          grep -q 'containerPort: 8080' k8s/deployment.yaml
-          grep -q 'apiVersion: v1' k8s/service.yaml
-          grep -q 'kind: Service' k8s/service.yaml
-          grep -q 'name: logistics-spark-service' k8s/service.yaml
-          grep -q 'type: NodePort' k8s/service.yaml
-          grep -q 'targetPort: 8080' k8s/service.yaml
-          echo 'Kubernetes manifest offline validation passed.'
+          kubectl version --client=true
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply --dry-run=client -f k8s/deployment.yaml
+          kubectl apply --dry-run=client -f k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl rollout status deployment/logistics-spark --timeout=300s
+          kubectl get pods -o wide
+          kubectl get svc
+          kubectl logs deployment/logistics-spark --tail=200

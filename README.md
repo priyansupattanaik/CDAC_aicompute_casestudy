@@ -313,9 +313,9 @@ The workflow steps are:
 2. Validate required files.
 3. Build the Docker image.
 4. Run the Docker image.
-5. Validate Kubernetes manifest content offline without requiring a live Kubernetes cluster.
+5. Create a temporary kind Kubernetes cluster, load the Docker image into it, validate the manifests, deploy the application, wait for rollout, and collect pod/service/log output.
 
-The Kubernetes validation step is offline because GitHub-hosted runners do not have this project local Kubernetes cluster configured. Actual Kubernetes deployment still requires Docker Desktop Kubernetes or Minikube locally.
+The Kubernetes step creates a temporary kind cluster inside the GitHub-hosted runner. This is separate from the developer laptop. Actual local deployment still requires Docker Desktop Kubernetes or Minikube locally.
 
 ## Key Findings
 
