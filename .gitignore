@@ -1,0 +1,4 @@
+﻿hadoop/bin/
+__pycache__/
+.ipynb_checkpoints/
+_tmp_parquet_test/
